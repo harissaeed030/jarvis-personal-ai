@@ -24,7 +24,14 @@ class MemoryIsolationTests(unittest.TestCase):
         self.db.close()
         self.tmp.cleanup()
 
+    def account_scope(self, candidate):
+        self.db.execute("CREATE TABLE IF NOT EXISTS jarvis_account_scope (id INTEGER PRIMARY KEY CHECK(id=1), owner_id TEXT NOT NULL)")
+        self.db.execute("INSERT OR IGNORE INTO jarvis_account_scope (id,owner_id) VALUES (1,?)", (candidate,))
+        self.db.commit()
+        return self.db.execute("SELECT owner_id FROM jarvis_account_scope WHERE id=1").fetchone()[0]
+
     def migrate(self, owner):
+        owner = self.account_scope(owner)
         for table in ("conversations", "user_memories"):
             columns = {row[1] for row in self.db.execute(f"PRAGMA table_info({table})")}
             if "owner_id" not in columns:
@@ -37,6 +44,11 @@ class MemoryIsolationTests(unittest.TestCase):
             self.db.execute("INSERT OR IGNORE INTO user_memories_scoped (id,owner_id,content,created_at) SELECT id,owner_id,content,created_at FROM user_memories")
             self.db.execute("INSERT OR IGNORE INTO jarvis_schema_migrations (name) VALUES ('memory_owner_copy_v2')")
         self.db.commit()
+
+    def test_owner_scope_survives_password_rotation(self):
+        first = self.account_scope("initial-owner-id")
+        after_password_change = self.account_scope("different-candidate-id")
+        self.assertEqual(first, after_password_change)
 
     def test_legacy_rows_are_preserved_and_scoped_to_existing_owner(self):
         self.migrate("owner-a")
