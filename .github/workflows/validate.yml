@@ -32,6 +32,16 @@ jobs:
           for (const marker of ['id="voice"', 'id="speak"', 'id="research"', 'id="login"']) {
             if (!html.includes(marker)) throw new Error(`UI feature missing: ${marker}`);
           }
+          if (!html.includes('rel="manifest"') || !html.includes('serviceWorker.register("/sw.js")')) throw new Error("PWA install hooks missing from home page.");
+          const manifestResponse = await fetch(`${base}/manifest.webmanifest`);
+          if (!manifestResponse.ok) throw new Error(`Manifest returned ${manifestResponse.status}`);
+          const manifest = await manifestResponse.json();
+          if (manifest.display !== "standalone" || !manifest.icons?.some(icon => icon.src === "/icon.svg")) throw new Error("PWA manifest is incomplete.");
+          const iconResponse = await fetch(`${base}/icon.svg`);
+          if (!iconResponse.ok || !iconResponse.headers.get("content-type")?.includes("image/svg+xml")) throw new Error("PWA icon endpoint is unavailable.");
+          const swResponse = await fetch(`${base}/sw.js`);
+          const swText = await swResponse.text();
+          if (!swResponse.ok || !swText.includes("jarvis-shell-v1") || !swText.includes("/api/")) throw new Error("PWA service worker is unavailable or unsafe.");
           const checks = [
             ["/api/session", {}],
             ["/api/history", {}],
