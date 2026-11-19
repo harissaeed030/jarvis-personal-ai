@@ -160,3 +160,10 @@ General web search beyond Wikipedia remains future work. PDF and DOCX text extra
 - Saved memories and conversations now use an owner scope; memory supports create/read/update/delete. The first authenticated use runs the D1 owner-scope migration.
 - Android browser voice controls now show clearer microphone permission, speech recognition, and speech-output fallback errors. Actual microphone/audio behavior still requires testing on the user's physical Android phone.
 - The optional official Stanford OpenJarvis Python sidecar builds successfully in GitHub Actions. The external Python host and Gemini API secret are not configured yet; Workers AI remains the live fallback.
+
+
+## Phase 3 memory migration deployment
+- Cloudflare Worker version **29** is deployed to 100% production traffic from commit `1eefb046a9a234091f0562a942cb4d8dc31bdc93`.
+- The production Worker keeps the existing Workers AI, D1 and password-secret bindings and adds the non-secret `OPENJARVIS_MODEL=gemini-2.5-flash-lite` selection.
+- The first authenticated request creates a stable account-scope ID in D1 and performs the non-destructive, atomic legacy-memory copy. The production database is not migrated by unauthenticated health checks.
+- The optional official OpenJarvis Python service remains unconfigured until the no-card host is created and its HTTPS URL/API key are entered as Worker settings.
