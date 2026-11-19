@@ -120,3 +120,10 @@ PDF/document uploads, general web search beyond Wikipedia, and full Stanford Ope
 - GitHub Actions validation run #65 completed successfully for commit `f49b57d8e7cc89330cbd8aa5ab7a776503f8b522`.
 - Cloudflare Worker version 20 is assigned 100% of production traffic. Its version metadata confirms the AI, D1, and password-secret bindings are present.
 - The automated workflow and deployment metadata do not replace a real user-side browser sign-in and AI conversation test.
+
+## Document attachments
+- TXT and Markdown: up to 100 KB.
+- PDF: up to 5 MB and 20 pages; selectable text is extracted in the browser. Scanned/image-only PDFs are not OCR-processed.
+- DOCX: up to 2 MB; plain text is extracted in the browser. Embedded images and complex layout are not preserved.
+- PDF.js and Mammoth are loaded from cdnjs only when a matching file is attached, so document extraction needs an internet connection. File contents are treated as untrusted reference text and are not executed.
+- Extracted text is capped before sending to the AI to keep mobile memory and request sizes manageable.
