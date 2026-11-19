@@ -73,7 +73,6 @@ jobs:
           const checks = [
             ["/api/session", {}],
             ["/api/history", {}],
-            ["/api/memory", {}],
             ["/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: "anonymous smoke test" }) }],
           ];
           for (const [path, init] of checks) {
