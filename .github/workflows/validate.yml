@@ -29,7 +29,7 @@ jobs:
           const home = await fetch(base);
           if (!home.ok) throw new Error(`Home page returned ${home.status}`);
           const html = await home.text();
-          for (const marker of ['id="voice"', 'id="speak"', 'id="login"']) {
+          for (const marker of ['id="voice"', 'id="speak"', 'id="research"', 'id="login"']) {
             if (!html.includes(marker)) throw new Error(`UI feature missing: ${marker}`);
           }
           console.log("Live JARVIS health, bindings, login UI, and voice controls passed.");
