@@ -11,12 +11,13 @@ A mobile-first personal AI web app, kept completely separate from NEXUS ISP Mana
 ## Current foundation
 - Responsive dark interface for Android and desktop.
 - Roman Urdu, Urdu, and English assistant behavior.
-- Cloudflare Workers AI binding; no Gemini key or other external API key is required.
-- Model: `@cf/zai-org/glm-4.7-flash`.
+- Native Cloudflare Workers AI binding; no Gemini key or external provider API key is required.
+- Model: `@cf/meta/llama-4-scout-17b-16e-instruct`.
+- The model was successfully tested through the connected Cloudflare account.
 - Health endpoint reports whether the AI binding is available.
 
 ## Usage and limits
-Workers AI currently includes 10,000 free Neurons per day on the Workers Free plan. The allowance resets daily at 00:00 UTC. Requests stop when the free daily allowance or another account limit is reached; use is not unlimited. The selected model is available on the Workers Free plan according to Cloudflare's current model availability guidance. Check official pricing and model availability before relying on it for continuous use.
+Cloudflare Workers AI currently includes 10,000 free Neurons per day on the Workers Free plan. The allowance resets daily at 00:00 UTC. When the daily allowance or another account limit is reached, further inference requests fail until capacity resets; usage is not unlimited. Model availability and pricing can change. Check Cloudflare's official Workers AI pricing and model pages before relying on continuous use.
 
 ## Deploy
 This project uses Wrangler:
