@@ -23,6 +23,13 @@ A mobile-first personal AI web app, kept completely separate from NEXUS ISP Mana
 - Login attempts are rate-limited per hashed client IP using D1: after 10 attempts in a 15-minute window, sign-in is temporarily blocked. Records older than 24 hours are cleaned up during login checks.
 - Health endpoint reports whether AI, database, and authentication are configured. The public health URL could not be independently fetched by the available web checker during the latest review, so perform a browser check before treating end-to-end runtime as verified.
 
+## Voice controls
+
+- The live Worker interface includes a microphone button using the browser SpeechRecognition API where supported. Dictation fills the message box; press Send to submit it.
+- The speaker button toggles browser speech synthesis for assistant replies.
+- Voice recognition and speech voices depend on Android browser support, installed language packs, and microphone permission. They are optional browser features, not server-side audio processing.
+- Voice recognition currently requests `en-PK`; Urdu speech recognition availability varies by browser.
+
 ## Usage and limits
 
 Workers AI usage is subject to the account's current free allocation, model pricing, and plan limits. It is not unlimited. Check Cloudflare's official Workers AI pricing and model pages before relying on continuous use.
@@ -48,4 +55,4 @@ binding = "AI"
 
 ## Planned next work
 
-PDF/document uploads, voice input/output, web research, a full in-app sign-in/logout experience, and full Stanford OpenJarvis backend integration remain future work. These are not implemented yet.
+PDF/document uploads, web research, and full Stanford OpenJarvis backend integration remain future work. Voice input/output and the in-app sign-in/logout experience are implemented in the live Worker interface. The GitHub workflow now also performs a live health and UI smoke test; if the public endpoint is unreachable from the runner, that check will fail visibly.
