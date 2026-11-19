@@ -2,6 +2,8 @@
 
 A mobile-first personal AI web app, kept completely separate from NEXUS ISP Management.
 
+> **OpenJarvis integration status:** This repository currently contains a lightweight browser assistant using Cloudflare Workers AI. It is not yet running the full Stanford OpenJarvis framework. Stanford OpenJarvis is a Python-based local-first framework (Python 3.11+, `uv`, and Ollama/model runtime); Cloudflare Workers cannot directly host that Python/Ollama runtime. A separate Linux host or supported container runtime is required for full framework integration. The current web assistant is a working lightweight alternative while that integration is evaluated.
+
 ## Live deployment
 
 - App: https://jarvis-personal-ai.harissaeed030.workers.dev
