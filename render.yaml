@@ -1,0 +1,21 @@
+# Optional evaluation deployment for the official OpenJarvis Python service.
+# Free Render instances sleep after 15 minutes and have ephemeral filesystems.
+# Do not treat this as always-on production hosting.
+services:
+  - type: web
+    name: jarvis-openjarvis
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: false
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: OPENJARVIS_HOME
+        value: /tmp/openjarvis
+      - key: OPENJARVIS_API_KEY
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false
