@@ -4,3 +4,8 @@ compatibility_date = "2026-11-19"
 
 [ai]
 binding = "AI"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "jarvis-chat-memory"
+database_id = "daeb8a90-5f85-466a-9522-04a97dc07742"
