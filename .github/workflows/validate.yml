@@ -55,7 +55,7 @@ jobs:
           const home = await fetch(base);
           if (!home.ok) throw new Error(`Home page returned ${home.status}`);
           const html = await home.text();
-          for (const marker of ['id="voice"', 'id="speak"', 'id="research"', 'id="login"', 'id="memory-button"', 'id="memory-panel"', 'id="memory-form"']) {
+          for (const marker of ['id="voice"', 'id="speak"', 'id="research"', 'id="login"', 'id="memory-button"', 'id="memory-panel"', 'id="memory-form"', 'id="voice-language"']) {
             if (!html.includes(marker)) throw new Error(`UI feature missing: ${marker}`);
           }
           if (!html.includes('rel="manifest"') || !html.includes('serviceWorker.register("/sw.js")')) throw new Error("PWA install hooks missing from home page.");
