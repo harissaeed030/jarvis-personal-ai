@@ -6,7 +6,7 @@ export default {async fetch(req,env){const u=new URL(req.url);
  if(u.pathname==="/api/chat"&&req.method==="POST"){
   if(!await isAuthed(req,env))return Response.json({error:"Please sign in first."},{status:401});
   if(!env.AI)return Response.json({error:"Workers AI binding is not configured."},{status:503});
-  try{const b=await req.json();if(typeof b.message!=="string"||!b.message.trim())return Response.json({error:"Message is required."},{status:400,headers:cors});if(b.message.length>12000)return Response.json({error:"Message too long."},{status:413,headers:cors});
+  try{const b=await req.json();if(typeof b.message!=="string"||!b.message.trim())return Response.json({error:"Message is required."},{status:400});if(b.message.length>12000)return Response.json({error:"Message too long."},{status:413,headers:cors});
    const result=await env.AI.run("@cf/meta/llama-4-scout-17b-16e-instruct",{messages:[{role:"system",content:"You are JARVIS, a helpful personal AI assistant. Reply naturally in the language the user uses, including Roman Urdu, Urdu and English. Be accurate, clear, and honest. Explain technical steps simply."},{role:"user",content:b.message}],max_tokens:1800,temperature:0.7});
    const reply=result?.response||result?.choices?.[0]?.message?.content||result?.output_text||"No answer generated.";
    return Response.json({reply,model:"@cf/meta/llama-4-scout-17b-16e-instruct"});
