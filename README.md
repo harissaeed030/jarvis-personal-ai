@@ -83,3 +83,12 @@ PDF/document uploads, general web search beyond Wikipedia, and full Stanford Ope
 - PDF, DOCX, and other binary formats are not supported by this lightweight Worker upload path.
 
 - CI live smoke tests validate that private API endpoints send `Cache-Control: no-store`; they do not claim a full authenticated browser login/chat test.
+
+
+## Version 15 — session and deployment verification
+- The browser waits for the server's session check before showing the signed-in state or requesting saved chat history.
+- GitHub Actions verifies Worker and browser JavaScript syntax, live health and required bindings, core interface markers, and that invalid session cookies are rejected by the session, history, and chat APIs with HTTP 401.
+- The same private API checks verify `Cache-Control: no-store` to prevent private responses from being cached.
+- Latest verified workflow run: [Run #51](https://github.com/harissaeed030/jarvis-personal-ai/actions/runs/44440110678) — successful.
+- Latest Cloudflare deployment: Worker version 15, deployed at 100% traffic. Required AI, D1, and password-secret bindings are attached.
+- These automated checks do not submit a real password or prove a complete authenticated AI conversation in a browser. That final user-session test remains a separate check.
