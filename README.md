@@ -61,7 +61,7 @@ binding = "AI"
 
 ## Planned next work
 
-PDF/document uploads, general web search beyond Wikipedia, and full Stanford OpenJarvis backend integration remain future work. Voice input/output and the in-app sign-in/logout experience are implemented in the live Worker interface. The GitHub workflow now also performs a live health and UI smoke test; if the public endpoint is unreachable from the runner, that check will fail visibly.
+General web search beyond Wikipedia remains future work. PDF and DOCX text extraction, voice input/output, and the in-app sign-in/logout experience are implemented in the Worker interface. Full Stanford OpenJarvis runtime integration still requires deployment of the separate Python service and its provider credentials. The GitHub workflow performs live health, UI, and private-route smoke checks.
 
 
 ## Version 12 update
@@ -144,3 +144,11 @@ PDF/document uploads, general web search beyond Wikipedia, and full Stanford Ope
 - The visual Saved memory panel is deployed: signed-in users can add, list, delete, and clear saved memories. GitHub Actions checks the live panel markers, unauthenticated memory-route rejection, and cross-origin write blocking. Authenticated memory CRUD with the private user password and the full Stanford OpenJarvis runtime hosting/real upstream chat remain pending.
 
 - Browser voice settings now let the user select English (Pakistan), Urdu, or English (US) for speech recognition; spoken replies use the selected locale, with Urdu-script detection as a fallback. Actual voice availability still depends on the Android browser and installed speech services.
+
+
+## Phase 3 — owner-scoped memory and OpenJarvis runtime preparation
+- Conversation history, recent context retrieval, and saved-memory CRUD are now scoped to an HMAC-derived owner identifier based on the existing password secret. Existing rows are preserved and assigned to the current owner by a one-time D1 migration.
+- Memory now supports create, list, edit, individual delete, and clear. The UI includes an Edit action. This remains a single-owner password-login application; it is not a multi-user account system.
+- Authenticated `GET /api/openjarvis/status` checks the configured upstream `/health` and `/v1/models` endpoints without exposing the API key.
+- `Dockerfile` and `render.yaml` prepare an optional no-card Render evaluation deployment of the official Stanford OpenJarvis Python runtime. Render free services sleep and have ephemeral filesystems, so this is not always-on production hosting. The Python service is not considered live until the Render service URL and API credentials are configured and a real chat is verified.
+- Phase 3 regression tests cover owner isolation, migration preservation, memory CRUD, and persistence semantics. They do not replace authenticated production API testing.
