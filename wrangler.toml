@@ -9,3 +9,17 @@ binding = "AI"
 binding = "DB"
 database_name = "jarvis-chat-memory"
 database_id = "daeb8a90-5f85-466a-9522-04a97dc07742"
+
+[observability]
+enabled = true
+head_sampling_rate = 0.1
+redact_query_string = true
+
+[observability.logs]
+enabled = true
+invocation_logs = true
+head_sampling_rate = 1.0
+
+[observability.traces]
+enabled = true
+head_sampling_rate = 0.05
