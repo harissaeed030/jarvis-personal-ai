@@ -20,6 +20,7 @@ A mobile-first personal AI web app, kept completely separate from NEXUS ISP Mana
 - The password is designed to live only in a Cloudflare Worker secret named `JARVIS_PASSWORD`, never in GitHub or browser code.
 - **Authentication secret configured:** Cloudflare currently has the `JARVIS_PASSWORD` secret attached to the Worker. Never put its value in this repository, browser code, or chat.
 - Authenticated chat history is stored in the D1 `conversations` table; `/api/history` reads it and `DELETE /api/history` clears it.
+- Login attempts are rate-limited per hashed client IP using D1: after 10 attempts in a 15-minute window, sign-in is temporarily blocked. Old rate-limit records are intended to be periodically cleaned up.
 - Health endpoint reports whether AI, database, and authentication are configured. The public health URL could not be independently fetched by the available web checker during the latest review, so perform a browser check before treating end-to-end runtime as verified.
 
 ## Usage and limits
@@ -29,7 +30,7 @@ Workers AI usage is subject to the account's current free allocation, model pric
 ## Deploy
 
 This project uses Wrangler:
-`npx wrangler deploy`
+`npx wrangler deploy` (run from this repository after authenticating Wrangler). Keep the existing `JARVIS_PASSWORD` Worker secret configured; never replace it with a blank value.
 
 The AI binding is configured in `wrangler.toml`:
 ```toml
@@ -47,4 +48,4 @@ binding = "AI"
 
 ## Planned next work
 
-PDF/document uploads, voice input/output, web research, login rate limiting, a full in-app sign-in/logout experience, and full Stanford OpenJarvis backend integration remain future work. These are not implemented yet.
+PDF/document uploads, voice input/output, web research, a full in-app sign-in/logout experience, and full Stanford OpenJarvis backend integration remain future work. These are not implemented yet.
