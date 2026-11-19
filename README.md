@@ -18,8 +18,9 @@ A mobile-first personal AI web app, kept completely separate from NEXUS ISP Mana
 - Model: `@cf/meta/llama-4-scout-17b-16e-instruct`.
 - Password-protected chat API is implemented with an HttpOnly, Secure, SameSite session cookie.
 - The password is designed to live only in a Cloudflare Worker secret named `JARVIS_PASSWORD`, never in GitHub or browser code.
-- **One-time setup still required:** add `JARVIS_PASSWORD` under Cloudflare Dashboard → Workers & Pages → `jarvis-personal-ai` → Settings → Variables and Secrets → Add → Secret. Use a strong password you choose, save, and redeploy if the dashboard requests it. Until this secret exists, the API intentionally rejects chat/login requests.
-- Health endpoint reports whether AI and authentication secrets are configured.
+- **Authentication secret configured:** Cloudflare currently has the `JARVIS_PASSWORD` secret attached to the Worker. Never put its value in this repository, browser code, or chat.
+- Authenticated chat history is stored in the D1 `conversations` table; `/api/history` reads it and `DELETE /api/history` clears it.
+- Health endpoint reports whether AI, database, and authentication are configured. The public health URL could not be independently fetched by the available web checker during the latest review, so perform a browser check before treating end-to-end runtime as verified.
 
 ## Usage and limits
 
@@ -46,4 +47,4 @@ binding = "AI"
 
 ## Planned next work
 
-Persistent private conversation history, PDF/document uploads, voice input/output, web research, and full Stanford OpenJarvis backend integration. These are not implemented yet.
+PDF/document uploads, voice input/output, web research, login rate limiting, a full in-app sign-in/logout experience, and full Stanford OpenJarvis backend integration remain future work. These are not implemented yet.
