@@ -16,6 +16,21 @@ jobs:
         run: node --check worker.js
       - name: Check browser JavaScript syntax
         run: node --check app.js
+
+      - name: Check embedded browser JavaScript
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const source = readFileSync('worker.js', 'utf8');
+          const html = source.match(/const html = `([\\s\\S]*?)`;/)?.[1];
+          if (!html) throw new Error('Worker HTML template not found');
+          const scripts = [...html.matchAll(/<script>([\\s\\S]*?)<\\/script>/g)];
+          if (!scripts.length) throw new Error('No inline browser scripts found');
+          for (const [index, match] of scripts.entries()) {
+            try { new Function(match[1]); } catch (error) { throw new Error(`Inline browser script ${index + 1}: ${error.message}`); }
+          }
+          console.log(`Validated ${scripts.length} inline browser script(s).`);
+          NODE
       - name: Live Worker smoke test
         run: |
           node --input-type=module <<'NODE'
