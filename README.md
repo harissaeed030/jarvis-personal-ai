@@ -100,7 +100,7 @@ PDF/document uploads, general web search beyond Wikipedia, and full Stanford Ope
 - All existing browser sessions are invalidated by the session format change; sign in again with the already-configured password. Never send that password in chat.
 
 
-## Version 16 — Android installable PWA
+## Version 17 — Android installable PWA
 - The live Worker now serves a real web app manifest, a JARVIS SVG app icon, and a service worker instead of returning the home page for those asset paths.
 - The service worker caches only the public app shell (home page, manifest, icon) for offline launch fallback. It explicitly bypasses all `/api/` requests so private chat, login, and history are never cached.
 - The home page registers the service worker and exposes standalone install metadata. On Android Chrome, use the browser menu and choose **Install app** or **Add to Home screen** when offered.
