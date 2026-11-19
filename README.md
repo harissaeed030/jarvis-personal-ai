@@ -23,6 +23,12 @@ A mobile-first personal AI web app, kept completely separate from NEXUS ISP Mana
 - Login attempts are rate-limited per hashed client IP using D1: after 10 attempts in a 15-minute window, sign-in is temporarily blocked. Records older than 24 hours are cleaned up during login checks.
 - Health endpoint reports whether AI, database, and authentication are configured. The public health URL could not be independently fetched by the available web checker during the latest review, so perform a browser check before treating end-to-end runtime as verified.
 
+## Source-backed research
+
+- Turn on the `Research: ON` control before sending a question to retrieve relevant Wikipedia article extracts.
+- JARVIS receives those excerpts as reference context and returns article URLs alongside its answer. The source list is displayed below the answer.
+- This is a limited Wikipedia-backed research feature, not general web search. It may not find recent news, niche websites, or information outside Wikipedia. Verify important claims against the linked source pages.
+
 ## Voice controls
 
 - The live Worker interface includes a microphone button using the browser SpeechRecognition API where supported. Dictation fills the message box; press Send to submit it.
@@ -55,4 +61,4 @@ binding = "AI"
 
 ## Planned next work
 
-PDF/document uploads, web research, and full Stanford OpenJarvis backend integration remain future work. Voice input/output and the in-app sign-in/logout experience are implemented in the live Worker interface. The GitHub workflow now also performs a live health and UI smoke test; if the public endpoint is unreachable from the runner, that check will fail visibly.
+PDF/document uploads, general web search beyond Wikipedia, and full Stanford OpenJarvis backend integration remain future work. Voice input/output and the in-app sign-in/logout experience are implemented in the live Worker interface. The GitHub workflow now also performs a live health and UI smoke test; if the public endpoint is unreachable from the runner, that check will fail visibly.
