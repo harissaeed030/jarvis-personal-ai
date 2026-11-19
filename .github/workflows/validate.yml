@@ -16,3 +16,21 @@ jobs:
         run: node --check worker.js
       - name: Check browser JavaScript syntax
         run: node --check app.js
+      - name: Live Worker smoke test
+        run: |
+          node --input-type=module <<'NODE'
+          const base = "https://jarvis-personal-ai.harissaeed030.workers.dev";
+          const health = await fetch(`${base}/api/health`);
+          if (!health.ok) throw new Error(`Health endpoint returned ${health.status}`);
+          const data = await health.json();
+          for (const key of ["aiConfigured", "databaseConfigured", "authenticationConfigured"]) {
+            if (data[key] !== true) throw new Error(`Worker binding missing: ${key}`);
+          }
+          const home = await fetch(base);
+          if (!home.ok) throw new Error(`Home page returned ${home.status}`);
+          const html = await home.text();
+          for (const marker of ['id="voice"', 'id="speak"', 'id="login"']) {
+            if (!html.includes(marker)) throw new Error(`UI feature missing: ${marker}`);
+          }
+          console.log("Live JARVIS health, bindings, login UI, and voice controls passed.");
+          NODE
