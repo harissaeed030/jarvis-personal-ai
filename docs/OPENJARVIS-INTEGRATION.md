@@ -61,3 +61,12 @@ The latest 20 saved items are added to the assistant's system context as user-pr
 ## Verification boundaries
 
 GitHub Actions can validate Worker syntax, embedded browser scripts, and public production health/security/PWA checks. It cannot prove a private OpenJarvis deployment is reachable until the service URL and API key have been configured in Cloudflare, nor can it perform a real user login without the user's password. Do not report full OpenJarvis integration as active until a real authenticated chat returns from the OpenJarvis provider and its fallback path has been exercised.
+
+
+## JARVIS persistent memory and account isolation
+
+The Worker stores conversation history and saved memories in the existing Cloudflare D1 database. On the first authenticated request, a migration creates a stable random owner ID in a singleton D1 account-scope row, assigns it to existing conversations, and copies legacy memories into `user_memories_scoped`. The owner ID is independent of the login password, so rotating `JARVIS_PASSWORD` does not orphan saved data.
+
+The migration is non-destructive: it retains the original `user_memories` source table, copies with `INSERT OR IGNORE`, and records a migration marker. Concurrent first requests can safely repeat the copy. All active memory create/read/update/delete and assistant-context queries use the scoped table.
+
+This is a single-owner password-login application, not a multi-user registration system. The account-scope row isolates this JARVIS account's records; multiple people sharing the same password are the same account. D1 remains the persistent source of truth even if the optional OpenJarvis sidecar restarts or sleeps.
