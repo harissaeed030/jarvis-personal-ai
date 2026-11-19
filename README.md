@@ -81,3 +81,5 @@ PDF/document uploads, general web search beyond Wikipedia, and full Stanford Ope
 - Attachment limit: 100 KB per file; combined prompt limit: 40,000 characters.
 - Document text is included as untrusted reference material, not executable instructions.
 - PDF, DOCX, and other binary formats are not supported by this lightweight Worker upload path.
+
+- CI live smoke tests validate that private API endpoints send `Cache-Control: no-store`; they do not claim a full authenticated browser login/chat test.
