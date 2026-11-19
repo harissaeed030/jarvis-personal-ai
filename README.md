@@ -142,3 +142,5 @@ PDF/document uploads, general web search beyond Wikipedia, and full Stanford Ope
 - Cloudflare Worker version 24 is deployed to 100% production traffic with the existing AI, D1, and `JARVIS_PASSWORD` bindings preserved. The bridge remains dormant until `OPENJARVIS_API_URL`, `OPENJARVIS_API_KEY`, and `OPENJARVIS_MODEL` are configured in Cloudflare; the separate Python service is not yet hosted.
 - Setup and architecture: [docs/OPENJARVIS-INTEGRATION.md](docs/OPENJARVIS-INTEGRATION.md).
 - The visual Saved memory panel is deployed: signed-in users can add, list, delete, and clear saved memories. GitHub Actions checks the live panel markers, unauthenticated memory-route rejection, and cross-origin write blocking. Authenticated memory CRUD with the private user password and the full Stanford OpenJarvis runtime hosting/real upstream chat remain pending.
+
+- Browser voice settings now let the user select English (Pakistan), Urdu, or English (US) for speech recognition; spoken replies use the selected locale, with Urdu-script detection as a fallback. Actual voice availability still depends on the Android browser and installed speech services.
