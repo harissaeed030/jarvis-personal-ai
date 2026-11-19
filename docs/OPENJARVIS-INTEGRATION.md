@@ -42,7 +42,7 @@ All endpoints below require the existing JARVIS session cookie and D1 binding:
 - `DELETE /api/memory?id=<id>`: delete one item.
 - `DELETE /api/memory`: clear saved memories.
 
-The latest 20 saved items are added to the assistant's system context as user-provided data, not instructions. Conversation history remains separate. The memory API is currently an authenticated API surface; a dedicated visual memory/settings panel is still future UI work.
+The latest 20 saved items are added to the assistant's system context as user-provided data, not instructions. Conversation history remains separate. The signed-in browser UI includes a Saved memory panel to add, list, delete individual items, or clear all memories. The panel uses the authenticated API and remains hidden while signed out.
 
 ## Verification boundaries
 
