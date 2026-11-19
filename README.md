@@ -127,3 +127,10 @@ PDF/document uploads, general web search beyond Wikipedia, and full Stanford Ope
 - DOCX: up to 2 MB; plain text is extracted in the browser. Embedded images and complex layout are not preserved.
 - PDF.js and Mammoth are loaded from cdnjs only when a matching file is attached, so document extraction needs an internet connection. File contents are treated as untrusted reference text and are not executed.
 - Extracted text is capped before sending to the AI to keep mobile memory and request sizes manageable.
+
+## Version 21 — PDF and DOCX reading
+- Production Worker v21 adds browser-side extraction for selectable-text PDFs (maximum 5 MB / 20 pages) and DOCX files (maximum 2 MB), alongside TXT/Markdown.
+- PDF.js and Mammoth are loaded only when needed from cdnjs; document parsing therefore requires an internet connection. Scanned PDFs are not OCR-supported, and DOCX images/layout are not retained.
+- Extracted text is capped at 28,000 characters before being sent to the AI. File content is handled as untrusted reference text.
+- GitHub Actions now validates the embedded browser scripts as well as Worker/app syntax and live endpoint security checks.
+- Cloudflare Worker version 21 is deployed to 100% traffic with the existing AI, D1, and password-secret bindings preserved.
