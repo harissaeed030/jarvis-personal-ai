@@ -32,13 +32,15 @@ jobs:
           for (const marker of ['id="voice"', 'id="speak"', 'id="research"', 'id="login"']) {
             if (!html.includes(marker)) throw new Error(`UI feature missing: ${marker}`);
           }
-          const sessionResponse = await fetch(`${base}/api/session?smoke=${Date.now()}-${Math.random()}`, { cache: "no-store", headers: { "Cache-Control": "no-cache" } });
-          if (!sessionResponse.headers.get("cache-control")?.includes("no-store")) {
-            throw new Error("Private session response is missing no-store cache protection.");
-          }
-          const historyResponse = await fetch(`${base}/api/history?smoke=${Date.now()}-${Math.random()}`, { cache: "no-store", headers: { "Cache-Control": "no-cache" } });
-          if (!historyResponse.headers.get("cache-control")?.includes("no-store")) {
-            throw new Error("Private history response is missing no-store cache protection.");
+          const checks = [
+            ["/api/session", {}],
+            ["/api/history", {}],
+            ["/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: "anonymous smoke test" }) }]
+          ];
+          for (const [path, init] of checks) {
+            const response = await fetch(`${base}${path}?smoke=${Date.now()}-${Math.random()}`, { ...init, cache: "no-store", headers: { ...(init.headers || {}), "Cache-Control": "no-cache", "Cookie": "" } });
+            if (response.status !== 401) throw new Error(`${path} must reject anonymous access with 401; got ${response.status}.`);
+            if (!response.headers.get("cache-control")?.includes("no-store")) throw new Error(`${path} response is missing no-store cache protection.`);
           }
           console.log("Live JARVIS health, bindings, UI, and private-response cache protection passed.");
           NODE
