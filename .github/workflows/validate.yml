@@ -38,6 +38,8 @@ jobs:
             ["/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: "smoke test" }) }]
           ]) {
             const protectedResponse = await fetch(`${base}${path}`, init);
+            const responseBody = await protectedResponse.text();
+            console.log(`${path}: HTTP ${protectedResponse.status}; body=${responseBody.slice(0, 160)}`);
             if (protectedResponse.status !== 401) {
               throw new Error(`${path} should reject anonymous access with 401, got ${protectedResponse.status}`);
             }
