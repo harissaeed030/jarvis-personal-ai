@@ -152,3 +152,11 @@ General web search beyond Wikipedia remains future work. PDF and DOCX text extra
 - Authenticated `GET /api/openjarvis/status` checks the configured upstream `/health` and `/v1/models` endpoints without exposing the API key.
 - `Dockerfile` and `render.yaml` prepare an optional no-card Render evaluation deployment of the official Stanford OpenJarvis Python runtime. Render free services sleep and have ephemeral filesystems, so this is not always-on production hosting. The Python service is not considered live until the Render service URL and API credentials are configured and a real chat is verified.
 - Phase 3 regression tests cover owner isolation, migration preservation, memory CRUD, and persistence semantics. They do not replace authenticated production API testing.
+
+
+## Phase 3 production deployment
+- Cloudflare Worker version **28** is deployed to 100% production traffic. The deployed Worker source is commit `1c776aa4d808eb915490515d2f622f4b68b1bd8b`.
+- Preserved production bindings: Workers AI (`AI`), D1 (`DB`, existing database), and `JARVIS_PASSWORD`.
+- Saved memories and conversations now use an owner scope; memory supports create/read/update/delete. The first authenticated use runs the D1 owner-scope migration.
+- Android browser voice controls now show clearer microphone permission, speech recognition, and speech-output fallback errors. Actual microphone/audio behavior still requires testing on the user's physical Android phone.
+- The optional official Stanford OpenJarvis Python sidecar builds successfully in GitHub Actions. The external Python host and Gemini API secret are not configured yet; Workers AI remains the live fallback.
