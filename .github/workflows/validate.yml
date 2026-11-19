@@ -36,12 +36,14 @@ jobs:
           node --input-type=module <<'NODE'
           import { readFileSync } from 'node:fs';
           const source = readFileSync('worker.js', 'utf8');
-          for (const marker of ['u.pathname==="/api/memory"', 'user_memories', 'OPENJARVIS_API_URL', 'OPENJARVIS_API_KEY', '/v1/chat/completions', 'OpenJarvis fallback', 'AbortSignal.timeout(15000)', 'non-JSON response', 'id="voice-language"', 'ur-PK']) {
+          for (const marker of ['u.pathname==="/api/memory"', 'user_memories', 'owner_id', 'accountScope', 'ensureOwnerScope', 'req.method==="PUT"', 'memory_owner_unique_v1', 'OPENJARVIS_API_URL', 'OPENJARVIS_API_KEY', '/v1/chat/completions', '/api/openjarvis/status', '/v1/models', 'base+"/health"', 'OpenJarvis fallback', 'AbortSignal.timeout(15000)', 'non-JSON response', 'id="voice-language"', 'ur-PK']) {
             if (!source.includes(marker)) throw new Error(`Phase 2 integration marker missing: ${marker}`);
           }
           if (!source.includes('USER-SAVED MEMORY')) throw new Error('Saved memory is not included in the assistant context.');
           console.log('Saved-memory API and optional OpenJarvis bridge markers passed.');
           NODE
+      - name: Test persistent owner-scoped memory semantics
+        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
       - name: Live Worker smoke test
         run: |
           node --input-type=module <<'NODE'
@@ -72,7 +74,9 @@ jobs:
             ["/api/session", {}],
             ["/api/history", {}],
             ["/api/memory", {}],
-            ["/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: "anonymous smoke test" }) }]
+            ["/api/openjarvis/status", {}],
+            ["/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: "anonymous smoke test" }) }],
+            ["/api/memory", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: "unauthorized update test" }) }]
           ];
           for (const [path, init] of checks) {
             const response = await fetch(`${base}${path}?smoke=${Date.now()}-${Math.random()}`, { ...init, cache: "no-store", headers: { ...(init.headers || {}), "Cache-Control": "no-cache", "Cookie": "jarvis_session=definitely-invalid" } });
