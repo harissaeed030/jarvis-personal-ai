@@ -8,15 +8,15 @@ This is an optional bridge, not a bundled or embedded copy of Stanford's Python 
 
 ## Card-free evaluation deployment (separate Python service)
 
-This repository now includes an optional Dockerfile and Render Blueprint for the official Stanford runtime. The Docker build clones the upstream `open-jarvis/OpenJarvis` repository at build time; it does not fork, patch, or write to that upstream repository.
+This repository now includes an optional Dockerfile and Render Blueprint for the official Stanford runtime. The Docker build fetches the official upstream `open-jarvis/OpenJarvis` source at pinned commit `c3ed63f1d2a2c0c1f7dabbc69050e1968a11dc10`; it does not fork, patch, or write to that upstream repository. Pinning makes the container build reproducible.
 
 - Blueprint: https://dashboard.render.com/blueprint/new?repo=https://github.com/harissaeed030/jarvis-personal-ai
 - Select the **Free** web-service plan. Render's official documentation says free web services need no payment for the initial deploy, but they sleep after 15 minutes idle, take about a minute to wake, may restart, and have ephemeral filesystems. Free services cannot attach persistent disks. This is an evaluation/demo host, not permanent always-on production hosting.
-- The Blueprint generates `OPENJARVIS_API_KEY` automatically. Add `GEMINI_API_KEY` as a secret from Google AI Studio; do not commit it. The container selects the official OpenJarvis cloud engine and `gemini-2.5-flash-lite`, which Google's current pricing page lists with a free tier. Do not add a payment method or enable paid billing; quotas and model availability can change.
+- The Blueprint generates `OPENJARVIS_API_KEY` automatically. Add `GEMINI_API_KEY` as a secret from Google AI Studio; do not commit it. The container selects the official OpenJarvis cloud engine and `gemini-2.5-flash`, which Google's current pricing page lists with a free tier. Do not add a payment method or enable paid billing; quotas and model availability can change.
 - Google states free-tier Gemini API content may be used to improve its products. Do not send confidential ISP/customer data through this free-tier provider.
 - OpenJarvis's own local SQLite state is ephemeral on this host. JARVIS conversation history and owner-scoped saved memories remain in Cloudflare D1 and are not stored on Render.
 
-After Render reports a successful deploy, copy its HTTPS service URL and generated `OPENJARVIS_API_KEY` into Cloudflare Worker settings as `OPENJARVIS_API_URL` and secret `OPENJARVIS_API_KEY`. Set `OPENJARVIS_MODEL=gemini-2.5-flash-lite`. Then sign in to JARVIS and call the authenticated `GET /api/openjarvis/status` endpoint (or use the app's API) to verify `/health` and `/v1/models`. The production Worker still falls back to Workers AI if this sidecar sleeps or fails.
+After Render reports a successful deploy, copy its HTTPS service URL and generated `OPENJARVIS_API_KEY` into Cloudflare Worker settings as `OPENJARVIS_API_URL` and secret `OPENJARVIS_API_KEY`. Set `OPENJARVIS_MODEL=gemini-2.5-flash` (this model ID is present in the pinned OpenJarvis cloud-engine catalog). Then sign in to JARVIS and call the authenticated `GET /api/openjarvis/status` endpoint (or use the app's API) to verify `/health` and `/v1/models`. The production Worker still falls back to Workers AI if this sidecar sleeps or fails.
 
 **Deployment boundary:** I can prepare and test the repository configuration, but cannot create a Render service or mint a Google AI Studio key from the connected GitHub/Cloudflare access. Those actions require the user's Render and Google accounts. Until the service URL and key exist, actual OpenJarvis chat is not live.
 
