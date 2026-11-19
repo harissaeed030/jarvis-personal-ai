@@ -32,5 +32,15 @@ jobs:
           for (const marker of ['id="voice"', 'id="speak"', 'id="research"', 'id="login"']) {
             if (!html.includes(marker)) throw new Error(`UI feature missing: ${marker}`);
           }
-          console.log("Live JARVIS health, bindings, login UI, and voice controls passed.");
+          for (const [path, init] of [
+            ["/api/session", {}],
+            ["/api/history", {}],
+            ["/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: "smoke test" }) }]
+          ]) {
+            const protectedResponse = await fetch(`${base}${path}`, init);
+            if (protectedResponse.status !== 401) {
+              throw new Error(`${path} should reject anonymous access with 401, got ${protectedResponse.status}`);
+            }
+          }
+          console.log("Live JARVIS health, bindings, UI, and anonymous API protection passed.");
           NODE
