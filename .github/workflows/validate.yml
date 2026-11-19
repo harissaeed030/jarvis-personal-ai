@@ -53,5 +53,5 @@ jobs:
             if (response.status !== 401) throw new Error(`${path} must reject invalid sessions with 401; got ${response.status}: ${body.slice(0, 120)}`);
             if (!response.headers.get("cache-control")?.includes("no-store")) throw new Error(`${path} response is missing no-store cache protection.`);
           }
-          console.log("Live JARVIS health, bindings, UI, and private-response cache protection passed.");
+          const csrf = await fetch(`${base}/api/login`, {\n            method: "POST",\n            headers: { "Content-Type": "application/json", "Origin": "https://attacker.example" },\n            body: JSON.stringify({ password: "invalid" }),\n            cache: "no-store"\n          });\n          if (csrf.status !== 403) throw new Error(`Cross-origin login must be blocked with 403; got ${csrf.status}.`);\n          if (!csrf.headers.get("cache-control")?.includes("no-store")) throw new Error("Cross-origin rejection is missing no-store cache protection.");\n          console.log("Live JARVIS health, bindings, PWA, private-response cache protection, and cross-origin request checks passed.");
           NODE
