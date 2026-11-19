@@ -134,3 +134,11 @@ PDF/document uploads, general web search beyond Wikipedia, and full Stanford Ope
 - Extracted text is capped at 28,000 characters before being sent to the AI. File content is handled as untrusted reference text.
 - GitHub Actions now validates the embedded browser scripts as well as Worker/app syntax and live endpoint security checks.
 - Cloudflare Worker version 21 is deployed to 100% traffic with the existing AI, D1, and password-secret bindings preserved.
+
+
+## Phase 2 — optional OpenJarvis bridge and saved memory
+- Added an authenticated D1-backed saved-memory API (`GET/POST/DELETE /api/memory`) with a 100-item cap and 2,000-character per-item limit. The latest 20 saved items are supplied as context to the assistant; conversation history remains separate.
+- Added an optional secure OpenJarvis upstream bridge using the official OpenAI-compatible `/v1/chat/completions` API. The API key remains a Worker secret; upstream failures fall back to the existing Workers AI model.
+- The bridge is dormant until `OPENJARVIS_API_URL`, `OPENJARVIS_API_KEY`, and `OPENJARVIS_MODEL` are configured in Cloudflare. This GitHub change alone does not deploy or activate the Python service.
+- Setup and architecture: [docs/OPENJARVIS-INTEGRATION.md](docs/OPENJARVIS-INTEGRATION.md).
+- Full Stanford OpenJarvis runtime hosting, real upstream authentication/chat, and a visual memory settings panel remain pending deployment and end-to-end testing.
