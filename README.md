@@ -68,3 +68,9 @@ PDF/document uploads, general web search beyond Wikipedia, and full Stanford Ope
 - Research results now render as clickable source links.
 - Source links are restricted in the UI to HTTPS URLs on `en.wikipedia.org`.
 - Session authentication, D1 conversation memory, and Workers AI bindings are preserved in deployment.
+
+
+## Version 13 security hardening
+- Private session, chat, history, and logout responses send `Cache-Control: no-store, private`.
+- GitHub Actions checks Worker and browser JavaScript syntax, live health/bindings, core UI markers, and private API cache headers.
+- The automated runner's session context can be authenticated, so CI does not treat that environment as a reliable anonymous-login test; real sign-in/chat should also be checked in a fresh private browser session.
