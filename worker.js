@@ -22,6 +22,9 @@ export default {async fetch(req,env){const u=new URL(req.url);
    const cleanReply=String(reply);if(env.DB){await env.DB.batch([env.DB.prepare("INSERT INTO conversations (id,role,content) VALUES (?,?,?)").bind(crypto.randomUUID(),"user",b.message),env.DB.prepare("INSERT INTO conversations (id,role,content) VALUES (?,?,?)").bind(crypto.randomUUID(),"assistant",cleanReply)]);}return privateJson({reply:cleanReply,model:"@cf/meta/llama-4-scout-17b-16e-instruct",sources});
   }catch(e){return privateJson({error:"Workers AI request failed: "+String(e?.message||"unknown error").slice(0,240)},{status:502})}
  }
+ if(u.pathname==="/manifest.webmanifest")return new Response(JSON.stringify(pwaManifest),{headers:{"Content-Type":"application/manifest+json; charset=utf-8","Cache-Control":"public, max-age=3600"}});
+ if(u.pathname==="/icon.svg")return new Response(pwaIcon,{headers:{"Content-Type":"image/svg+xml; charset=utf-8","Cache-Control":"public, max-age=86400"}});
+ if(u.pathname==="/sw.js")return new Response(serviceWorker,{headers:{"Content-Type":"application/javascript; charset=utf-8","Cache-Control":"no-cache","Service-Worker-Allowed":"/"}});
  if(u.pathname.startsWith("/api/"))return Response.json({error:"Not found"},{status:404});
  return new Response(html,{headers:{"Content-Type":"text/html; charset=utf-8","Cache-Control":"no-store"}});
 }};
