@@ -53,8 +53,8 @@ binding = "AI"
 
 ## Repository layout
 
-- `index.html`, `styles.css`, `app.js`: modular frontend source.
-- `worker.js`: deployed self-contained Worker UI and API.
+- `worker.js`: source of truth for the deployed self-contained UI and API; the HTML/CSS/browser JavaScript are currently embedded in this Worker file.
+- `index.html`, `styles.css`, `app.js`: earlier standalone frontend scaffold files; they are not currently served by the Worker route.
 - `wrangler.toml`: Worker and Workers AI binding configuration.
 - `manifest.webmanifest`: installable web-app metadata.
 - `.github/workflows/validate.yml`: JavaScript syntax checks.
@@ -92,3 +92,9 @@ PDF/document uploads, general web search beyond Wikipedia, and full Stanford Ope
 - Latest verified workflow run: [Run #51](https://github.com/harissaeed030/jarvis-personal-ai/actions/runs/44440110678) — successful.
 - Latest Cloudflare deployment: Worker version 15, deployed at 100% traffic. Required AI, D1, and password-secret bindings are attached.
 - These automated checks do not submit a real password or prove a complete authenticated AI conversation in a browser. That final user-session test remains a separate check.
+
+## Version 16 session security
+- Session cookies now contain an HMAC-signed issuance timestamp and expire server-side after 7 days; replaying an expired cookie no longer authenticates.
+- Session signatures use a versioned HMAC payload and are compared without an early-exit character comparison.
+- Deployments preserve the existing `JARVIS_PASSWORD` secret, Workers AI binding, and D1 database binding.
+- All existing browser sessions are invalidated by the session format change; sign in again with the already-configured password. Never send that password in chat.
