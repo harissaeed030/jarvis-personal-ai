@@ -27,7 +27,7 @@ A mobile-first personal AI web app, kept completely separate from NEXUS ISP Mana
 
 - Turn on the `Research: ON` control before sending a question to retrieve relevant Wikipedia article extracts.
 - JARVIS receives those excerpts as reference context and returns article URLs alongside its answer. The source list is displayed below the answer.
-- This is a limited Wikipedia-backed research feature, not general web search. It may not find recent news, niche websites, or information outside Wikipedia. Verify important claims against the linked source pages.
+- This is a limited Wikipedia-backed research feature, not general web search. It uses the public MediaWiki API and does not require a separate API key. It may not find recent news, niche websites, or information outside Wikipedia. Verify important claims against the linked source pages.
 
 ## Voice controls
 
