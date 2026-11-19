@@ -3,10 +3,12 @@ FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    OPENJARVIS_HOME=/tmp/openjarvis
+    OPENJARVIS_HOME=/tmp/openjarvis \
+    PATH="/root/.cargo/bin:${PATH}"
 
-RUN apt-get update && apt-get install -y --no-install-recommends git build-essential ca-certificates \
+RUN apt-get update && apt-get install -y --no-install-recommends git curl build-essential ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
+    && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal \
     && pip install --no-cache-dir uv
 
 WORKDIR /opt/openjarvis
