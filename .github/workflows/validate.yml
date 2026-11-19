@@ -71,6 +71,7 @@ jobs:
           const checks = [
             ["/api/session", {}],
             ["/api/history", {}],
+            ["/api/memory", {}],
             ["/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: "anonymous smoke test" }) }]
           ];
           for (const [path, init] of checks) {
@@ -87,5 +88,8 @@ jobs:
           });
           if (csrf.status !== 403) throw new Error(`Cross-origin login must be blocked with 403; got ${csrf.status}.`);
           if (!csrf.headers.get("cache-control")?.includes("no-store")) throw new Error("Cross-origin rejection is missing no-store cache protection.");
+          const memoryCsrf = await fetch(`${base}/api/memory`, { method: "POST", headers: { "Content-Type": "application/json", "Origin": "https://attacker.example" }, body: JSON.stringify({ content: "cross-origin memory write test" }), cache: "no-store" });
+          if (memoryCsrf.status !== 403) throw new Error(`Cross-origin memory writes must be blocked with 403; got ${memoryCsrf.status}.`);
+          if (!memoryCsrf.headers.get("cache-control")?.includes("no-store")) throw new Error("Cross-origin memory rejection is missing no-store cache protection.");
           console.log("Live JARVIS health, bindings, PWA, private-response cache protection, and cross-origin request checks passed.");
           NODE
