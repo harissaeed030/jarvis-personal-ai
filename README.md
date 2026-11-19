@@ -62,3 +62,9 @@ binding = "AI"
 ## Planned next work
 
 PDF/document uploads, general web search beyond Wikipedia, and full Stanford OpenJarvis backend integration remain future work. Voice input/output and the in-app sign-in/logout experience are implemented in the live Worker interface. The GitHub workflow now also performs a live health and UI smoke test; if the public endpoint is unreachable from the runner, that check will fail visibly.
+
+
+## Version 12 update
+- Research results now render as clickable source links.
+- Source links are restricted in the UI to HTTPS URLs on `en.wikipedia.org`.
+- Session authentication, D1 conversation memory, and Workers AI bindings are preserved in deployment.
