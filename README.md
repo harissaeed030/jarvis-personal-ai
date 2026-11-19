@@ -74,3 +74,10 @@ PDF/document uploads, general web search beyond Wikipedia, and full Stanford Ope
 - Private session, chat, history, and logout responses send `Cache-Control: no-store, private`.
 - GitHub Actions checks Worker and browser JavaScript syntax, live health/bindings, core UI markers, and private API cache headers.
 - The automated runner's session context can be authenticated, so CI does not treat that environment as a reliable anonymous-login test; real sign-in/chat should also be checked in a fresh private browser session.
+
+
+## Version 14 document attachments
+- Chat accepts `.txt` and `.md` file attachments from the browser.
+- Attachment limit: 100 KB per file; combined prompt limit: 40,000 characters.
+- Document text is included as untrusted reference material, not executable instructions.
+- PDF, DOCX, and other binary formats are not supported by this lightweight Worker upload path.
