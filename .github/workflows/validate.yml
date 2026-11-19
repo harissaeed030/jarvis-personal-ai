@@ -31,6 +31,17 @@ jobs:
           }
           console.log(`Validated ${scripts.length} inline browser script(s).`);
           NODE
+      - name: Check Phase 2 integration surfaces
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const source = readFileSync('worker.js', 'utf8');
+          for (const marker of ['u.pathname==="/api/memory"', 'user_memories', 'OPENJARVIS_API_URL', 'OPENJARVIS_API_KEY', '/v1/chat/completions', 'OpenJarvis fallback']) {
+            if (!source.includes(marker)) throw new Error(`Phase 2 integration marker missing: ${marker}`);
+          }
+          if (!source.includes('USER-SAVED MEMORY')) throw new Error('Saved memory is not included in the assistant context.');
+          console.log('Saved-memory API and optional OpenJarvis bridge markers passed.');
+          NODE
       - name: Live Worker smoke test
         run: |
           node --input-type=module <<'NODE'
