@@ -32,12 +32,16 @@ jobs:
           for (const marker of ['id="voice"', 'id="speak"', 'id="research"', 'id="login"']) {
             if (!html.includes(marker)) throw new Error(`UI feature missing: ${marker}`);
           }
+          const sessionResponse = await fetch(`${base}/api/session`, { headers: { "Cache-Control": "no-cache" } });
+          const sessionBody = await sessionResponse.json();
+          if (sessionResponse.status === 200 && sessionBody.authenticated === true) {
+            throw new Error("Anonymous session was unexpectedly authenticated.");
+          }
           for (const [path, init] of [
-            ["/api/session", {}],
             ["/api/history", {}],
             ["/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: "smoke test" }) }]
           ]) {
-            const protectedResponse = await fetch(`${base}${path}`, init);
+            const protectedResponse = await fetch(`${base}${path}`, { ...init, headers: { ...(init.headers || {}), "Cache-Control": "no-cache" } });
             const responseBody = await protectedResponse.text();
             console.log(`${path}: HTTP ${protectedResponse.status}; body=${responseBody.slice(0, 160)}`);
             if (protectedResponse.status !== 401) {
