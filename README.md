@@ -113,3 +113,10 @@ PDF/document uploads, general web search beyond Wikipedia, and full Stanford Ope
 - GitHub Actions verifies the live cross-origin login rejection, PWA assets, required Worker bindings, invalid-session rejection, and private response cache headers.
 - Worker version 19 is deployed to 100% traffic with the existing AI, D1, and `JARVIS_PASSWORD` secret bindings preserved.
 - Latest cross-origin validation run: https://github.com/harissaeed030/jarvis-personal-ai/actions/runs/44441286689
+
+## Version 20 — premium mobile interface
+- The self-contained Worker UI has been upgraded with a refined responsive layout, improved spacing and typography, premium dark visual styling, and mobile-focused composer controls.
+- The deployment uses the existing Cloudflare Workers AI binding, D1 database, and `JARVIS_PASSWORD` secret; no credentials were added to the repository.
+- GitHub Actions validation run #65 completed successfully for commit `f49b57d8e7cc89330cbd8aa5ab7a776503f8b522`.
+- Cloudflare Worker version 20 is assigned 100% of production traffic. Its version metadata confirms the AI, D1, and password-secret bindings are present.
+- The automated workflow and deployment metadata do not replace a real user-side browser sign-in and AI conversation test.
