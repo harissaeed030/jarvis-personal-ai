@@ -105,3 +105,11 @@ PDF/document uploads, general web search beyond Wikipedia, and full Stanford Ope
 - The service worker caches only the public app shell (home page, manifest, icon) for offline launch fallback. It explicitly bypasses all `/api/` requests so private chat, login, and history are never cached.
 - The home page registers the service worker and exposes standalone install metadata. On Android Chrome, use the browser menu and choose **Install app** or **Add to Home screen** when offered.
 - GitHub Actions now checks the live manifest, icon, service worker, install hooks, and API-cache bypass marker.
+
+
+## Version 19 — cross-origin request protection
+- State-changing `/api/` requests reject a mismatched `Origin` header and browser `Sec-Fetch-Site: cross-site` requests with HTTP 403.
+- The rejection response is private and non-cacheable.
+- GitHub Actions verifies the live cross-origin login rejection, PWA assets, required Worker bindings, invalid-session rejection, and private response cache headers.
+- Worker version 19 is deployed to 100% traffic with the existing AI, D1, and `JARVIS_PASSWORD` secret bindings preserved.
+- Latest cross-origin validation run: https://github.com/harissaeed030/jarvis-personal-ai/actions/runs/44441286689
