@@ -32,7 +32,7 @@ jobs:
           for (const marker of ['id="voice"', 'id="speak"', 'id="research"', 'id="login"']) {
             if (!html.includes(marker)) throw new Error(`UI feature missing: ${marker}`);
           }
-          const sessionResponse = await fetch(`${base}/api/session?smoke=${Date.now()}-${Math.random()}`, { cache: "no-store", headers: { "Cache-Control": "no-cache", "Cookie": "" } });
+          const sessionResponse = await fetch(`${base}/api/session?smoke=${Date.now()}-${Math.random()}`, { cache: "no-store", headers: { "Cache-Control": "no-cache", "Cookie": "jarvis_session=invalid-smoke-token" } });
           const sessionBody = await sessionResponse.json();
           if (sessionResponse.status === 200 && sessionBody.authenticated === true) {
             throw new Error("Anonymous session was unexpectedly authenticated.");
