@@ -44,6 +44,8 @@ jobs:
           NODE
       - name: Test persistent owner-scoped memory semantics
         run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Build official OpenJarvis Python sidecar
+        run: docker build --pull -t jarvis-openjarvis-ci .
       - name: Live Worker smoke test
         run: |
           node --input-type=module <<'NODE'
