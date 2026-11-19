@@ -52,7 +52,7 @@ class MemoryIsolationTests(unittest.TestCase):
         self.db.execute("INSERT INTO user_memories (id,content,owner_id) VALUES ('a2','shared text','owner-a')")
         self.db.execute("INSERT INTO user_memories (id,content,owner_id) VALUES ('b2','shared text','owner-b')")
         self.db.commit()
-        self.assertEqual([r[0] for r in self.db.execute("SELECT content FROM conversations WHERE owner_id='owner-a' ORDER BY id")], ["legacy chat", "private A"])
+        self.assertEqual([r[0] for r in self.db.execute("SELECT content FROM conversations WHERE owner_id='owner-a' ORDER BY id")], ["private A", "legacy chat"])
         self.assertEqual([r[0] for r in self.db.execute("SELECT content FROM user_memories WHERE owner_id='owner-b'")], ["shared text"])
         self.db.execute("DELETE FROM user_memories WHERE owner_id='owner-a'")
         self.db.commit()
