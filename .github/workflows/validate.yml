@@ -29,7 +29,7 @@ jobs:
               raise SystemExit("Dockerfile model does not match wrangler.toml")
 
           render = Path("render.yaml").read_text()
-          pattern = rf"(?m)^\\s*- key: OPENJARVIS_MODEL\\s*\\n\\s*value: {re.escape(model)}\\s*$"
+          pattern = rf"(?m)^\s*- key: OPENJARVIS_MODEL\s*\n\s*value: {re.escape(model)}\s*$"
           if not re.search(pattern, render):
               raise SystemExit("Render Blueprint model does not match wrangler.toml")
 
