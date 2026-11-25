@@ -164,6 +164,6 @@ General web search beyond Wikipedia remains future work. PDF and DOCX text extra
 
 ## Phase 3 memory migration deployment
 - Cloudflare Worker version **29** is deployed to 100% production traffic from commit `1eefb046a9a234091f0562a942cb4d8dc31bdc93`.
-- The production Worker keeps the existing Workers AI, D1 and password-secret bindings and adds the non-secret `OPENJARVIS_MODEL=gemini-2.5-flash-lite` selection.
+- The production Worker v29 currently has the legacy dashboard variable `OPENJARVIS_MODEL=gemini-2.5-flash-lite`. This branch aligns `wrangler.toml` with the pinned sidecar and Render Blueprint by setting `OPENJARVIS_MODEL=gemini-2.5-flash`; the production value changes only after a reviewed Worker deployment. The OpenJarvis bridge remains inactive until its HTTPS service URL and API key are configured.
 - The first authenticated request creates a stable account-scope ID in D1 and performs the non-destructive, atomic legacy-memory copy. The production database is not migrated by unauthenticated health checks.
-- The optional official OpenJarvis Python service remains unconfigured until the no-card host is created and its HTTPS URL/API key are entered as Worker settings.
+- The optional official OpenJarvis Python service remains unconfigured until its host URL and API key are configured in Cloudflare. Workers AI remains the active fallback.
