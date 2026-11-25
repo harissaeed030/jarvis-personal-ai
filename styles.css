@@ -1,1 +1,35 @@
 *{box-sizing:border-box} :root{color-scheme:dark;font-family:Inter,system-ui,-apple-system,sans-serif;background:#080d18;color:#edf3ff}body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 50% -20%,#173451 0,transparent 55%),#080d18}.app{max-width:850px;min-height:100dvh;margin:auto;padding:22px 22px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column}.topbar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #243247;padding:5px 0 18px}.brand{display:flex;gap:12px;align-items:center}.orb{width:42px;height:42px;border:1px solid #50d7e7;border-radius:50%;display:grid;place-items:center;color:#75f0ff;font-weight:800;box-shadow:0 0 22px #19badb44}.brand strong{display:block;letter-spacing:3px;font-size:15px}.brand small{display:block;color:#8194ad;font-size:9px;letter-spacing:1.6px;margin-top:4px}.status{font-size:10px;letter-spacing:1px;color:#8de5c1}.status i{display:inline-block;width:7px;height:7px;background:#56d9a3;border-radius:50%;margin-right:6px;box-shadow:0 0 10px #56d9a3}.welcome{margin:auto 0;padding:60px 0 32px}.eyebrow{color:#6bdbea;font-size:10px;letter-spacing:2.5px}.welcome h1{font-size:clamp(38px,8vw,66px);line-height:1.05;letter-spacing:-2px;margin:18px 0}.welcome h1 span{color:#68d8e9}.welcome p{color:#9baac0;font-size:15px}.suggestions{display:flex;flex-wrap:wrap;gap:9px;margin-top:28px}.suggestion{background:#111d2d;border:1px solid #293c54;color:#c8d9ec;border-radius:24px;padding:11px 14px;font-size:12px}.chat{display:flex;flex-direction:column;gap:16px;padding:8px 0 22px}.message{max-width:90%;padding:14px 16px;border-radius:16px;line-height:1.55;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}.user{align-self:flex-end;background:#15384a;border:1px solid #246078}.assistant{align-self:flex-start;background:#111b2a;border:1px solid #27384d;color:#e2ebf7}.composer{position:sticky;bottom:0;display:flex;gap:10px;padding:10px;background:#101a29;border:1px solid #2b3c53;border-radius:18px;box-shadow:0 12px 40px #0006}.composer textarea{flex:1;resize:none;max-height:130px;border:0;outline:0;background:transparent;color:#fff;font:inherit;padding:9px 4px}.composer button{width:42px;height:42px;border:0;border-radius:13px;background:#61d9e8;color:#07111b;font-size:24px;font-weight:700}button{cursor:pointer}button:disabled{opacity:.5}footer{text-align:center;color:#62748d;font-size:10px;letter-spacing:1px;padding:17px 0 0}footer span{color:#64d9e8;margin:0 5px}@media(min-width:700px){.app{padding-left:34px;padding-right:34px}.welcome{padding-top:85px}.message{max-width:75%}}@media(max-width:420px){.app{padding-left:15px;padding-right:15px}.suggestion{font-size:11px;padding:10px 12px}}
+
+/* Mobile-first finishing pass */
+html{min-height:100%;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{min-height:100svh;overscroll-behavior-y:contain}
+.app{min-height:100svh;padding-top:max(14px,env(safe-area-inset-top));padding-bottom:calc(18px + env(safe-area-inset-bottom))}
+.topbar{gap:12px;align-items:center}
+.brand{min-width:0}
+.status{white-space:nowrap}
+.welcome,.chat{width:100%;min-width:0}
+.message{max-width:min(92%,760px);overflow-wrap:anywhere;word-break:break-word}
+.composer{width:100%;flex-wrap:wrap;align-items:center;bottom:calc(8px + env(safe-area-inset-bottom));padding:9px}
+.composer textarea{order:-1;flex:1 1 100%;width:100%;min-width:0;max-height:34svh;min-height:44px;padding:10px 8px}
+.composer button{min-height:42px;min-width:42px;touch-action:manipulation}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #69e4f2;outline-offset:2px}
+@media(max-width:520px){
+ .app{padding-left:14px;padding-right:14px}
+ .topbar{position:sticky;top:0;z-index:5;padding-top:8px;padding-bottom:12px;background:rgba(8,13,24,.94);backdrop-filter:blur(16px)}
+ .brand{gap:9px}.orb{width:40px;height:40px;flex:0 0 40px}
+ .brand strong{font-size:13px}.brand small{font-size:8px;letter-spacing:1.2px}
+ .status{font-size:9px}
+ .welcome{padding:clamp(38px,8vh,64px) 0 28px}
+ .welcome h1{font-size:clamp(39px,11.5vw,56px);letter-spacing:-.05em;line-height:1.02}
+ .welcome p{font-size:14px;line-height:1.65}
+ .suggestions{gap:8px;margin-top:22px}
+ .suggestion{min-height:40px;padding:10px 12px;font-size:11px}
+ .chat{gap:13px;padding-bottom:18px}
+ .message{max-width:94%;padding:12px 14px;font-size:14px;line-height:1.65;border-radius:16px}
+ .composer{gap:8px;border-radius:18px}
+ .composer textarea{font-size:16px;line-height:1.45}
+ .composer button{width:42px;height:42px;border-radius:13px}
+ footer{padding:16px 0 4px;font-size:9px}
+}
+@media(max-width:370px){.app{padding-left:11px;padding-right:11px}.status{display:none}.suggestion{font-size:10px;padding:9px 10px}.composer{gap:6px;padding:7px}.composer button{width:39px;min-width:39px;height:40px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
