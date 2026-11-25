@@ -167,3 +167,7 @@ General web search beyond Wikipedia remains future work. PDF and DOCX text extra
 - The production Worker keeps the existing Workers AI, D1 and password-secret bindings and adds the non-secret `OPENJARVIS_MODEL=gemini-2.5-flash-lite` selection.
 - The first authenticated request creates a stable account-scope ID in D1 and performs the non-destructive, atomic legacy-memory copy. The production database is not migrated by unauthenticated health checks.
 - The optional official OpenJarvis Python service remains unconfigured until the no-card host is created and its HTTPS URL/API key are entered as Worker settings.
+
+## OpenJarvis model configuration
+- Wrangler, the pinned OpenJarvis Docker runtime, and the Render Blueprint use `gemini-2.5-flash`.
+- The production Worker remains on its existing dashboard model setting until a reviewed Worker deployment applies the Wrangler configuration. The OpenJarvis bridge is not active until its HTTPS service URL and API key are configured; Workers AI remains the fallback.

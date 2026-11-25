@@ -5,6 +5,9 @@ compatibility_date = "2026-11-19"
 [ai]
 binding = "AI"
 
+[vars]
+OPENJARVIS_MODEL = "gemini-2.5-flash"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "jarvis-chat-memory"

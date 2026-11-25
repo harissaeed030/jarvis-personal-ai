@@ -12,6 +12,29 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Check OpenJarvis model configuration stays aligned
+        run: |
+          python3 - <<'PY'
+          import re
+          import tomllib
+          from pathlib import Path
+
+          worker = tomllib.loads(Path("wrangler.toml").read_text())
+          model = worker.get("vars", {}).get("OPENJARVIS_MODEL")
+          if not model:
+              raise SystemExit("wrangler.toml must define vars.OPENJARVIS_MODEL")
+
+          dockerfile = Path("Dockerfile").read_text()
+          if f'"--model", "{model}"' not in dockerfile:
+              raise SystemExit("Dockerfile model does not match wrangler.toml")
+
+          render = Path("render.yaml").read_text()
+          pattern = rf"(?m)^\s*- key: OPENJARVIS_MODEL\s*\n\s*value: {re.escape(model)}\s*$"
+          if not re.search(pattern, render):
+              raise SystemExit("Render Blueprint model does not match wrangler.toml")
+
+          print(f"OpenJarvis model aligned across Wrangler, Docker, and Render: {model}")
+          PY
       - name: Check Worker syntax
         run: node --check worker.js
       - name: Check browser JavaScript syntax
